@@ -23,11 +23,7 @@ public:
     Sensors(const Sensors&) = delete;
 	Sensors& operator=(const Sensors&) = delete;
 
-    static Sensors& instance()
-    {
-        static Sensors inst;
-        return inst;
-    }
+    static Sensors& instance();
 
     void setup();
     void update();
@@ -45,31 +41,12 @@ public:
     Actuators(const Actuators&) = delete;
 	Actuators& operator=(const Actuators&) = delete;
 
-    static Actuators& instance()
-    {
-        static Actuators inst;
-        return inst;
-    }
+    static Actuators& instance();
 
-    inline static int map(const int x, const int x_min, const int x_max)
-    {
-        return ::map(x, x_min, x_max, act_min, act_max);
-    }
-
-    inline static constexpr int range()
-    {
-        return act_max-act_min;
-    }
-
-    inline static constexpr int bias()
-    {
-        return (act_max+act_min)/2;
-    }
-
-    inline static constexpr int inverse(int x)
-    {
-        return act_max - x + act_min;
-    }
+    inline static int map(const int x, const int x_min, const int x_max);
+    inline static constexpr int range();
+    inline static constexpr int bias();
+    inline static constexpr int inverse(int x);
 
     void setup();
 

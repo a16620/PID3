@@ -1,5 +1,11 @@
 #include "plane.h"
 
+Sensors& Sensors::instance()
+{
+    static Sensors inst;
+    return inst;
+}
+
 Sensors::Sensors() : accel_sqrt(0.0f), mag_direction(0.0f)
 {
 }
@@ -56,6 +62,32 @@ vec3f Sensors::getAccel()
 vec3f Sensors::getAngle()
 {
     return vec3f();
+}
+
+inline int Actuators::map(const int x, const int x_min, const int x_max)
+{
+    return ::map(x, x_min, x_max, act_min, act_max);
+}
+
+inline constexpr int Actuators::range()
+{
+    return act_max-act_min;
+}
+
+inline constexpr int Actuators::bias()
+{
+    return (act_max+act_min)/2;
+}
+
+inline constexpr int Actuators::inverse(int x)
+{
+    return act_max - x + act_min;
+}
+
+Actuators& Actuators::instance()
+{
+    static Actuators inst;
+    return inst;
 }
 
 Actuators::Actuators()
