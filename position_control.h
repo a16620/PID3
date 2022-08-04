@@ -15,3 +15,4 @@ public:
     PositionControl();
     void process(float pitch, float roll, float yaw);
 };
+

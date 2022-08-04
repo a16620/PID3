@@ -1,10 +1,7 @@
 #include "plane.h"
-#include <Adafruit_BMP280.h>
-#include <MPU9250_asukiaaa.h>
 
 Sensors::Sensors() : accel_sqrt(0.0f), mag_direction(0.0f)
 {
-
 }
 
 void Sensors::setup()
@@ -46,7 +43,46 @@ void Sensors::update()
     }
 }
 
+vec3f Sensors::getGyro()
+{
+    return gyro;
+}
+
+vec3f Sensors::getAccel()
+{
+    return accel;
+}
+
+vec3f Sensors::getAngle()
+{
+    return vec3f();
+}
+
 Actuators::Actuators()
+{
+}
+
+void Actuators::setup()
+{
+
+}
+
+void Actuators::setAiler1(const int& value)
+{
+
+}
+
+void Actuators::setAiler2(const int& value)
+{
+    
+}
+
+void Actuators::setElev(const int& value)
+{
+    
+}
+
+void Actuators::setRudder(const int& value)
 {
     
 }

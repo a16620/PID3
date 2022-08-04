@@ -1,5 +1,7 @@
 #pragma once
 #include <Arduino.h>
+#include <Adafruit_BMP280.h>
+#include <MPU9250_asukiaaa.h>
 
 #define YAW z
 #define PITCH y
@@ -8,9 +10,6 @@
 struct vec3f {
     float x, y, z;
 };
-
-class Adafruit_BMP280;
-class MPU9250_asukiaaa;
 
 class Sensors {
     Adafruit_BMP280 bmp;
@@ -40,7 +39,7 @@ public:
 
 class Actuators {
     static constexpr int act_min = 0, act_max = 255;
-    
+
     Actuators();
 public:
     Actuators(const Actuators&) = delete;

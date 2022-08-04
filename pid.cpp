@@ -1,6 +1,9 @@
 #include "PID.h"
 #include <Arduino.h>
 
+float DeltaTime::delta_ = 0.0f;
+long DeltaTime::prevTime = 0;
+
 inline float DualLoopPID::position_p(const float& target, const float& position)
 {
 	return (target-position)*pP;
@@ -80,4 +83,22 @@ void DualLoopPID::max_output(const int& m)
 void DualLoopPID::max_integ(const int& m)
 {
 	integ_max = m;
+}
+
+void DeltaTime::init()
+{
+        prevTime = micros();
+        delta_ = 0.0f;
+}
+
+void DeltaTime::update()
+{
+	auto now = micros();
+    delta_ = static_cast<float>(now-prevTime) / 1000000.0f;
+    prevTime = now;
+}
+
+float DeltaTime::delta()
+{
+    return delta_;
 }

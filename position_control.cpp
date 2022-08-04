@@ -1,5 +1,4 @@
 #include "position_control.h"
-#include "delta_time.h"
 
 PositionControl::PositionControl() : sensors(Sensors::instance()), actuators(Actuators::instance()),
                                         pid_pitch(0,0,0,0,pid_max, pid_i_max), pid_roll(0,0,0,0,pid_max,pid_i_max), pid_yaw(0,0,0,0,pid_max,pid_i_max)

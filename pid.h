@@ -29,3 +29,11 @@ public:
 	void max_integ(const int& m);
 };
 
+class DeltaTime {
+    static long prevTime;
+    static float delta_;
+public:
+    static void init(void);
+    static void update(void);
+    static float delta();
+};
