@@ -1,2 +1,23 @@
 #pragma once
+#include "vec_math.h"
 
+class Kalman {
+    const float q1=0.001,q2=0.003,r1=0.03;
+    float x[2], p[2][2];
+public:
+    Kalman();
+
+    float operator()(float u, float y, float dt);
+    float get() const;
+};
+
+class Madgwick {
+    const float beta = 0.5f, sampleFreq = 1;
+    Quat q;
+    
+public:
+    Madgwick();
+    
+    void UpdateIMU(vec3 g, vec3 a);
+    void UpdateAHRS(vec3 g, vec3 a, vec3 m);
+};
