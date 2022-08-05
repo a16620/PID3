@@ -72,9 +72,9 @@ vec3 vec3::normalized() const {
 
 void vec3::normalize() {
 	const auto norm = invSqrt(sq_norm());
-	x /= norm;
-	y /= norm;
-	z /= norm;
+	x *= norm;
+	y *= norm;
+	z *= norm;
 }
 
 float vec3::dot(const vec3& a, const vec3& b) {
@@ -123,8 +123,8 @@ Quat Quat::normalized() const {
 void Quat::normalize() {
 	const auto norm_inv = invSqrt(sq_norm());
 
-	w /= norm_inv;
-	v = v / norm_inv;
+	w *= norm_inv;
+	v = v * norm_inv;
 }
 
 Quat Quat::operator-() const {
