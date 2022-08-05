@@ -40,10 +40,19 @@ public:
 
     static Actuators& instance();
 
-    inline static int map(const int x, const int x_min, const int x_max);
-    inline static constexpr int range();
-    inline static constexpr int bias();
-    inline static constexpr int inverse(int x);
+    static int map(const int x, const int x_min, const int x_max);
+
+    static constexpr int range() {
+        return act_max-act_min;
+    }
+
+    static constexpr int bias() {
+        return (act_max+act_min)/2;
+    }
+
+    static constexpr int inverse(int x) {
+        return (act_max+act_min) - x;
+    }
 
     void setup();
 

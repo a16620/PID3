@@ -1,7 +1,7 @@
 #include "position_control.h"
 
 PositionControl ctrl;
-vec3f target;
+vec3 target;
 
 void setup()
 {

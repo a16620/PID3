@@ -64,24 +64,9 @@ vec3 Sensors::getAngle()
     return vec3();
 }
 
-inline int Actuators::map(const int x, const int x_min, const int x_max)
+int Actuators::map(const int x, const int x_min, const int x_max)
 {
     return ::map(x, x_min, x_max, act_min, act_max);
-}
-
-inline constexpr int Actuators::range()
-{
-    return act_max-act_min;
-}
-
-inline constexpr int Actuators::bias()
-{
-    return (act_max+act_min)/2;
-}
-
-inline constexpr int Actuators::inverse(int x)
-{
-    return (act_max+act_min) - x;
 }
 
 Actuators& Actuators::instance()

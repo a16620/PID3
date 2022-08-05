@@ -18,6 +18,8 @@ class Madgwick {
 public:
     Madgwick();
     
-    void UpdateIMU(vec3 g, vec3 a);
-    void UpdateAHRS(vec3 g, vec3 a, vec3 m);
+    void updateIMU(vec3 g, vec3 a);
+    void updateAHRS(vec3 g, vec3 a, vec3 m);
+
+    vec3 getEuler() const;
 };
