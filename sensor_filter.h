@@ -18,6 +18,8 @@ class Madgwick {
 public:
     Madgwick();
     
+    void initQuat(const Quat& _q);
+
     void updateIMU(vec3 g, vec3 a);
     void updateAHRS(vec3 g, vec3 a, vec3 m);
 

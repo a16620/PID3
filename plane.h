@@ -3,6 +3,7 @@
 #include <Adafruit_BMP280.h>
 #include <MPU9250_asukiaaa.h>
 #include "vec_math.h"
+#include "sensor_filter.h"
 
 #define YAW z
 #define PITCH y
@@ -12,8 +13,9 @@ class Sensors {
     Adafruit_BMP280 bmp;
     MPU9250_asukiaaa mpu;
     
-    vec3 accel, gyro, mag;
-    float accel_sqrt, mag_direction;
+    vec3 accel, gyro, mag, filtered_angle;
+
+    Madgwick mad;
 
     Sensors();
 public:

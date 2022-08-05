@@ -4,7 +4,7 @@
 
 class PositionControl {
     const int pid_max = Actuators::range()/2;
-    const float pid_i_max = 100;
+    const float pid_i_max = 70;
 
     DualLoopPID pid_pitch, pid_roll, pid_yaw;
 

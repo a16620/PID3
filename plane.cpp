@@ -6,7 +6,7 @@ Sensors& Sensors::instance()
     return inst;
 }
 
-Sensors::Sensors() : accel_sqrt(0.0f), mag_direction(0.0f)
+Sensors::Sensors()
 {
 }
 
@@ -28,8 +28,6 @@ void Sensors::update()
         accel.x = mpu.accelX();
         accel.y = mpu.accelY();
         accel.z = mpu.accelZ();
-
-        accel_sqrt = mpu.accelSqrt();
     }
 
     if (mpu.gyroUpdate() == 0)
@@ -44,9 +42,10 @@ void Sensors::update()
         mag.x = mpu.magX();
         mag.y = mpu.magY();
         mag.z = mpu.magZ();
-
-        mag_direction = mpu.magHorizDirection();
     }
+
+    mad.updateAHRS(gyro, accel, mag);
+    filtered_angle = mad.getEuler();
 }
 
 vec3 Sensors::getGyro()
@@ -61,7 +60,7 @@ vec3 Sensors::getAccel()
 
 vec3 Sensors::getAngle()
 {
-    return vec3();
+    return filtered_angle;
 }
 
 int Actuators::map(const int x, const int x_min, const int x_max)

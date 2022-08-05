@@ -16,8 +16,8 @@ void setup()
 
 void loop()
 {
-    Sensors::instance().update();
 	DeltaTime::update();
+    Sensors::instance().update();
 
     ctrl.process(target.PITCH, target.ROLL, target.YAW);
 }

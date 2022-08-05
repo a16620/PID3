@@ -37,12 +37,17 @@ Madgwick::Madgwick()
     q = Quat(1.0f, {});
 }
 
+void Madgwick::initQuat(const Quat& _q)
+{
+	q = _q;
+}
+
 void Madgwick::updateAHRS(vec3 g, vec3 a, vec3 m) {
 	Quat s, qDot;
 	float hx, hy;
 	float _2qwmx, _2qwmy, _2qwmz, _2qxmx, _2bx, _2bz, _4bx, _4bz, _2qw, _2qx, _2qy, _2qz, _2qwqy, _2qyqz, qw_2, qwqx, qwqy, qwqz, qx_2, qxqy, qxqz, qy_2, qyqz, qz_2;
 
-	if((m.x == 0.0f) && (m.y == 0.0f) && (m.z == 0.0f)) {
+	if(m.isZero()) {
 		updateIMU(g, a);
 		return;
 	}
