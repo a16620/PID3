@@ -49,19 +49,19 @@ void Sensors::update()
     }
 }
 
-vec3f Sensors::getGyro()
+vec3 Sensors::getGyro()
 {
     return gyro;
 }
 
-vec3f Sensors::getAccel()
+vec3 Sensors::getAccel()
 {
     return accel;
 }
 
-vec3f Sensors::getAngle()
+vec3 Sensors::getAngle()
 {
-    return vec3f();
+    return vec3();
 }
 
 inline int Actuators::map(const int x, const int x_min, const int x_max)
@@ -81,7 +81,7 @@ inline constexpr int Actuators::bias()
 
 inline constexpr int Actuators::inverse(int x)
 {
-    return act_max - x + act_min;
+    return (act_max+act_min) - x;
 }
 
 Actuators& Actuators::instance()

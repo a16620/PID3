@@ -2,20 +2,17 @@
 #include <Arduino.h>
 #include <Adafruit_BMP280.h>
 #include <MPU9250_asukiaaa.h>
+#include "vec_math.h"
 
 #define YAW z
 #define PITCH y
 #define ROLL x
 
-struct vec3f {
-    float x, y, z;
-};
-
 class Sensors {
     Adafruit_BMP280 bmp;
     MPU9250_asukiaaa mpu;
     
-    vec3f accel, gyro, mag;
+    vec3 accel, gyro, mag;
     float accel_sqrt, mag_direction;
 
     Sensors();
@@ -28,9 +25,9 @@ public:
     void setup();
     void update();
 
-    vec3f getGyro();
-    vec3f getAccel();
-    vec3f getAngle();
+    vec3 getGyro();
+    vec3 getAccel();
+    vec3 getAngle();
 };
 
 class Actuators {
