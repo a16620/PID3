@@ -25,7 +25,7 @@ void Sensors::update()
 {
     if (mpu.accelUpdate() == 0)
     {
-        accel.x = mpu.accelX();
+        accel.x = -mpu.accelX();
         accel.y = mpu.accelY();
         accel.z = mpu.accelZ();
     }
@@ -33,18 +33,20 @@ void Sensors::update()
     if (mpu.gyroUpdate() == 0)
     {
         gyro.x = mpu.gyroX();
-        gyro.y = mpu.gyroY();
-        gyro.z = mpu.gyroZ();
+        gyro.y = -mpu.gyroY();
+        gyro.z = -mpu.gyroZ();
     }
 
     if (mpu.magUpdate() == 0)
     {
-        mag.x = mpu.magX();
+        mag.x = -mpu.magX();
         mag.y = mpu.magY();
         mag.z = mpu.magZ();
     }
 
-    mad.updateAHRS(gyro, accel, mag);
+    const float deg2rad = (float)M_PI/180.0f;
+
+    mad.updateAHRS(gyro*deg2rad, accel, mag);
     filtered_angle = mad.getEuler();
 }
 

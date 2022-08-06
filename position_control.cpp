@@ -1,7 +1,7 @@
 #include "position_control.h"
 
 PositionControl::PositionControl() : sensors(Sensors::instance()), actuators(Actuators::instance()),
-                                        pid_pitch(0,0,0,0,pid_max, pid_i_max), pid_roll(0,0,0,0,pid_max,pid_i_max), pid_yaw(0,0,0,0,pid_max,pid_i_max)
+                                        pid_pitch(0.7, 0.5, 0.15, 0.05,pid_max, pid_i_max), pid_roll(0.7, 0.5, 0.15, 0.05,pid_max,pid_i_max), pid_yaw(0.7, 0.5, 0.15, 0.05,pid_max,pid_i_max)
 {
 
 }
