@@ -2,6 +2,7 @@
 #include <Arduino.h>
 #include <Adafruit_BMP280.h>
 #include <MPU9250_asukiaaa.h>
+#include <Servo.h>
 #include "vec_math.h"
 #include "sensor_filter.h"
 
@@ -33,7 +34,13 @@ public:
 };
 
 class Actuators {
-    static constexpr int act_min = 0, act_max = 255;
+    static constexpr int act_min = 30, act_max = 150;
+#ifdef USE_MICROSEC_WRITE
+    static constexpr int mic_min = 1000, mic_max = 2000;
+    static int mic_map(const int x);
+#endif
+
+    Servo w_ail1, w_ail2, w_rud, w_elev;
 
     Actuators();
 public:
@@ -41,8 +48,6 @@ public:
 	Actuators& operator=(const Actuators&) = delete;
 
     static Actuators& instance();
-
-    static int map(const int x, const int x_min, const int x_max);
 
     static constexpr int range() {
         return act_max-act_min;

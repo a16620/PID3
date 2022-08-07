@@ -12,7 +12,7 @@ public:
 };
 
 class Madgwick {
-    const float beta = 0.5f, sampleFreq = 1;
+    const float beta = 0.1f, sampleFreq = 60;
     Quat q;
     
 public:

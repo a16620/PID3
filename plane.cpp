@@ -65,10 +65,12 @@ vec3 Sensors::getAngle()
     return filtered_angle;
 }
 
-int Actuators::map(const int x, const int x_min, const int x_max)
+#ifdef USE_MICROSEC_WRITE
+int Actuators::mic_map(const int x)
 {
-    return ::map(x, x_min, x_max, act_min, act_max);
+    return ::map(x, act_min, act_max, mic_min, mic_max);
 }
+#endif
 
 Actuators& Actuators::instance()
 {
@@ -82,25 +84,52 @@ Actuators::Actuators()
 
 void Actuators::setup()
 {
+#ifdef USE_MICROSEC_WRITE
+    w_ail1.attach(1, mic_min, mic_max);
+    w_ail2.attach(1, mic_min, mic_max);
+    w_elev.attach(1, mic_min, mic_max);
+    w_rud.attach(1, mic_min, mic_max);
+#else
+    w_ail1.attach(1);
+    w_ail2.attach(1);
+    w_elev.attach(1);
+    w_rud.attach(1);
 
+#endif
 }
 
 void Actuators::setAiler1(const int& value)
 {
-
+#ifdef USE_MICROSEC_WRITE
+    w_ail1.writeMicroseconds(Actuators::mic_map(value));
+#else
+    w_ail1.write(value);
+#endif
 }
 
 void Actuators::setAiler2(const int& value)
 {
-    
+#ifdef USE_MICROSEC_WRITE
+    w_ail2.writeMicroseconds(Actuators::mic_map(value));
+#else
+    w_ail2.write(value);
+#endif
 }
 
 void Actuators::setElev(const int& value)
 {
-    
+#ifdef USE_MICROSEC_WRITE
+    w_elev.writeMicroseconds(Actuators::mic_map(value));
+#else
+    w_elev.write(value);
+#endif
 }
 
 void Actuators::setRudder(const int& value)
 {
-    
+#ifdef USE_MICROSEC_WRITE
+    w_rud.writeMicroseconds(Actuators::mic_map(value));
+#else
+    w_rud.write(value);
+#endif
 }
