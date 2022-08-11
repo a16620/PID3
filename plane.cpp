@@ -13,40 +13,31 @@ Sensors::Sensors()
 void Sensors::setup()
 {
     Wire.begin();
-    mpu.setWire(&Wire);
-
-    bmp.begin();
-    mpu.beginAccel();
-    mpu.beginGyro();
-    mpu.beginMag();
 }
 
 void Sensors::update()
 {
-    if (mpu.accelUpdate() == 0)
-    {
-        accel.x = -mpu.accelX();
-        accel.y = mpu.accelY();
-        accel.z = mpu.accelZ();
-    }
-
-    if (mpu.gyroUpdate() == 0)
-    {
-        gyro.x = mpu.gyroX();
-        gyro.y = -mpu.gyroY();
-        gyro.z = -mpu.gyroZ();
-    }
-
-    if (mpu.magUpdate() == 0)
-    {
-        mag.x = -mpu.magX();
-        mag.y = mpu.magY();
-        mag.z = mpu.magZ();
-    }
-
+    static int16_t sensor_cnt[3];
     const float deg2rad = (float)M_PI/180.0f;
 
-    mad.updateAHRS(gyro*deg2rad, accel, mag);
+    if (mpu.readByte(MPU6050_ADDRESS, INT_STATUS) & 0x01)
+    {
+        mpu.readAccelData(sensor_cnt);
+        auto accel_res = mpu.getAres();
+
+        accel.x = sensor_cnt[0]*accel_res;
+        accel.y = sensor_cnt[1]*accel_res;
+        accel.z = sensor_cnt[2]*accel_res;
+
+        mpu.readGyroData(sensor_cnt);
+        auto gyro_res = mpu.getGres()*deg2rad;
+
+        gyro.x = sensor_cnt[0]*gyro_res;
+        gyro.y = sensor_cnt[1]*gyro_res;
+        gyro.z = sensor_cnt[2]*gyro_res;
+    }
+
+    mad.updateIMU(gyro, accel);
     filtered_angle = mad.getEuler();
 }
 
