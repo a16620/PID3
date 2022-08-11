@@ -1,7 +1,6 @@
 #pragma once
 #include <Arduino.h>
-#include <Adafruit_BMP280.h>
-#include <MPU9250_asukiaaa.h>
+#include <MPU6050.h>
 #include <Servo.h>
 #include "vec_math.h"
 #include "sensor_filter.h"
@@ -11,10 +10,9 @@
 #define ROLL x
 
 class Sensors {
-    Adafruit_BMP280 bmp;
-    MPU9250_asukiaaa mpu;
+    MPU6050lib mpu;
     
-    vec3 accel, gyro, mag, filtered_angle;
+    vec3 accel, gyro, filtered_angle;
 
     Madgwick mad;
 
