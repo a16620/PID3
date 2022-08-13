@@ -1,7 +1,7 @@
 #pragma once
 #include <Arduino.h>
-#include <MPU6050.h>
 #include <Servo.h>
+#include "MPU6050_6Axis_MotionApps20.h"
 #include "vec_math.h"
 #include "sensor_filter.h"
 
@@ -10,11 +10,15 @@
 #define ROLL x
 
 class Sensors {
-    MPU6050lib mpu;
+    MPU6050 mpu;
     
-    vec3 accel, gyro, filtered_angle;
-public:
-    Madgwick mad;
+    int packetSize;
+    static volatile bool dmpInt;
+    static void DmpIntFunc();
+
+    bool _available;
+    Quat quat_angle;
+    vec3 gyro, ypr_angle;
 
     Sensors();
 public:
@@ -25,9 +29,9 @@ public:
 
     void setup();
     void update();
+    bool avilable() const;
 
     vec3 getGyro();
-    vec3 getAccel();
     vec3 getAngle();
 };
 

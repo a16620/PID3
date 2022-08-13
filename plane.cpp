@@ -1,4 +1,7 @@
 #include "plane.h"
+#include "I2Cdev.h"
+
+volatile bool Sensors::dmpInt = false;
 
 Sensors& Sensors::instance()
 {
@@ -6,40 +9,62 @@ Sensors& Sensors::instance()
     return inst;
 }
 
+void Sensors::DmpIntFunc()
+{
+    dmpInt = true;
+}
+
 Sensors::Sensors()
 {
+    _available = false;
 }
 
 void Sensors::setup()
 {
     Wire.begin();
-    mpu.initMPU6050();
+    Wire.setClock(400000);
+
+    mpu.initialize();
+    pinMode(2, INPUT);
+    auto dmpStatus = mpu.dmpInitialize();
+
+    if (dmpStatus == 0)
+    {
+        mpu.setDMPEnabled(true);
+        attachInterrupt(digitalPinToInterrupt(2), DmpIntFunc, RISING);
+        packetSize = mpu.dmpGetFIFOPacketSize();
+        _available = true;
+    }
+
+    pinMode(13, OUTPUT);
 }
 
 void Sensors::update()
 {
-    static int16_t sensor_cnt[3];
     const float deg2rad = (float)M_PI/180.0f;
+    static uint8_t fifoBuffer[64];
 
-    if (mpu.readByte(MPU6050_ADDRESS, INT_STATUS) & 0x01)
+    if (mpu.dmpGetCurrentFIFOPacket(fifoBuffer))
     {
-        mpu.readAccelData(sensor_cnt);
-        auto accel_res = mpu.getAres();
-
-        accel.x = sensor_cnt[0]*accel_res;
-        accel.y = sensor_cnt[1]*accel_res;
-        accel.z = sensor_cnt[2]*accel_res;
-
-        mpu.readGyroData(sensor_cnt);
-        auto gyro_res = mpu.getGres()*deg2rad;
-
-        gyro.x = sensor_cnt[0]*gyro_res;
-        gyro.y = sensor_cnt[1]*gyro_res;
-        gyro.z = sensor_cnt[2]*gyro_res;
+        Quaternion q;
+        VectorFloat g;
+        VectorInt16 int_gyro;
+        mpu.dmpGetQuaternion(&q, fifoBuffer);
+        mpu.dmpGetGravity(&g, &q);
+        mpu.dmpGetYawPitchRoll(reinterpret_cast<float*>(&ypr_angle), &q,&g);
+        mpu.dmpGetGyro(&int_gyro, fifoBuffer);
+        
+        gyro.x = int_gyro.x*deg2rad;
+        gyro.y = int_gyro.y*deg2rad;
+        gyro.z = int_gyro.z*deg2rad;
     }
 
-    mad.updateIMU(gyro, accel);
-    filtered_angle = mad.getEuler();
+    
+}
+
+bool Sensors::avilable() const
+{
+    return _available;
 }
 
 vec3 Sensors::getGyro()
@@ -47,14 +72,9 @@ vec3 Sensors::getGyro()
     return gyro;
 }
 
-vec3 Sensors::getAccel()
-{
-    return accel;
-}
-
 vec3 Sensors::getAngle()
 {
-    return filtered_angle;
+    return ypr_angle;
 }
 
 #ifdef USE_MICROSEC_WRITE

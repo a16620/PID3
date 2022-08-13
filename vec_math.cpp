@@ -92,7 +92,7 @@ vec3 vec3::cross(const vec3& a, const vec3& b) {
 }
 
 Quat::Quat() {
-	w = 0;
+	w = 1.0f;
 	v = vec3();
 }
 
