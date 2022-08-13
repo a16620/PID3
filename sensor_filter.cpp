@@ -163,6 +163,11 @@ void Madgwick::updateIMU(vec3 g, vec3 a) {
 	q.normalize();
 }
 
+Quat Madgwick::getQuat() const
+{
+	return q;
+}
+
 vec3 Madgwick::getEuler() const
 {
 	vec3 euler;

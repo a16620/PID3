@@ -13,6 +13,7 @@ Sensors::Sensors()
 void Sensors::setup()
 {
     Wire.begin();
+    mpu.initMPU6050();
 }
 
 void Sensors::update()

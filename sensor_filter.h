@@ -23,5 +23,6 @@ public:
     void updateIMU(vec3 g, vec3 a);
     void updateAHRS(vec3 g, vec3 a, vec3 m);
 
+    Quat getQuat() const;
     vec3 getEuler() const;
 };

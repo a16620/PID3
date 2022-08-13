@@ -13,7 +13,7 @@ class Sensors {
     MPU6050lib mpu;
     
     vec3 accel, gyro, filtered_angle;
-
+public:
     Madgwick mad;
 
     Sensors();
