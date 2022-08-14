@@ -5,10 +5,8 @@ Actuators& actuators = Actuators::instance();
 
 void setup()
 {
-	//DeltaTime::init();
-
-    sensors.setup();
-    actuators.setup();
+    sensors.setup(); //센서 준비
+    actuators.setup(); //서보 준비
 
 
     Serial.begin(9600);
@@ -17,7 +15,7 @@ void setup()
 
 void loop()
 {
-    if (!sensors.avilable())
+    if (!sensors.avilable()) //센서에 오류가 있으면 종료
         return;
     
 	//DeltaTime::update();

@@ -3,18 +3,14 @@
 #include <Servo.h>
 #include "MPU6050_6Axis_MotionApps20.h"
 #include "vec_math.h"
-#include "sensor_filter.h"
 
 #define YAW z
 #define PITCH y
 #define ROLL x
 
+//센서를 담당하는 클래스. 싱글톤
 class Sensors {
     MPU6050 mpu;
-    
-    int packetSize;
-    static volatile bool dmpInt;
-    static void DmpIntFunc();
 
     bool _available;
     Quat quat_angle;
@@ -27,14 +23,15 @@ public:
 
     static Sensors& instance();
 
-    void setup();
-    void update();
+    void setup(); //센서 사용을 위한 준비 함수
+    void update(); //센서값 갱신
     bool avilable() const;
 
-    vec3 getGyro();
-    vec3 getAngle();
+    vec3 getGyro(); //현재 각속도
+    vec3 getAngle(); //현재 각도
 };
 
+//서보, 프로펠러 제어를 위한 클래스. 싱글톤
 class Actuators {
     static constexpr int act_min = 30, act_max = 150;
 #ifdef USE_MICROSEC_WRITE
@@ -63,7 +60,7 @@ public:
         return (act_max+act_min) - x;
     }
 
-    void setup();
+    void setup(); //핀등을 설정
 
 	void setAiler1(const int& value);
 	void setAiler2(const int& value);

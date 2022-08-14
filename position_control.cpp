@@ -8,10 +8,10 @@ PositionControl::PositionControl() : sensors(Sensors::instance()), actuators(Act
 
 void PositionControl::process(float pitch, float roll, float yaw)
 {
-    const auto angle = sensors.getAngle(), gyro = sensors.getGyro();
+    const auto angle = sensors.getAngle(), gyro = sensors.getGyro(); //현재 각도와 각속도 얻음
     const auto dt = DeltaTime::delta();
 
-    auto pitch_act = pid_pitch.pid(pitch, angle.PITCH, gyro.PITCH, dt)+Actuators::bias();
+    auto pitch_act = pid_pitch.pid(pitch, angle.PITCH, gyro.PITCH, dt)+Actuators::bias(); //bias를 더해 서보에 전달 가능하게 범위를 변경 (- ~ +)->(0 ~ +)
     auto roll_act = pid_roll.pid(roll, angle.ROLL, gyro.ROLL, dt)+Actuators::bias();
     auto yaw_act = pid_yaw.pid(yaw, angle.YAW, gyro.YAW, dt)+Actuators::bias();
 

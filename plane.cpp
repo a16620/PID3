@@ -1,17 +1,10 @@
 #include "plane.h"
 #include "I2Cdev.h"
 
-volatile bool Sensors::dmpInt = false;
-
 Sensors& Sensors::instance()
 {
     static Sensors inst;
     return inst;
-}
-
-void Sensors::DmpIntFunc()
-{
-    dmpInt = true;
 }
 
 Sensors::Sensors()
@@ -31,12 +24,8 @@ void Sensors::setup()
     if (dmpStatus == 0)
     {
         mpu.setDMPEnabled(true);
-        attachInterrupt(digitalPinToInterrupt(2), DmpIntFunc, RISING);
-        packetSize = mpu.dmpGetFIFOPacketSize();
         _available = true;
     }
-
-    pinMode(13, OUTPUT);
 }
 
 void Sensors::update()
@@ -44,7 +33,7 @@ void Sensors::update()
     const float deg2rad = (float)M_PI/180.0f;
     static uint8_t fifoBuffer[64];
 
-    if (mpu.dmpGetCurrentFIFOPacket(fifoBuffer))
+    if (mpu.dmpGetCurrentFIFOPacket(fifoBuffer)) //자체적으로 overflow 해결해줌
     {
         Quaternion q;
         VectorFloat g;
@@ -57,9 +46,7 @@ void Sensors::update()
         gyro.x = int_gyro.x*deg2rad;
         gyro.y = int_gyro.y*deg2rad;
         gyro.z = int_gyro.z*deg2rad;
-    }
-
-    
+    }    
 }
 
 bool Sensors::avilable() const

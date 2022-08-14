@@ -2,6 +2,8 @@
 
 constexpr float MATH_PI = 3.141592653589793f;
 
+//PID제어를 위한 이중 루프 클래스
+//각 오차->각속도 제어
 class DualLoopPID
 {
 private:
