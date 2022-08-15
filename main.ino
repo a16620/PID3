@@ -22,8 +22,9 @@ void loop()
     sensors.update();
 
 
-    static int cnt = 0;
-    if (++cnt == 250) {
+    static unsigned long timer = 0;
+    auto now = millis();
+    if (now > timer) {
         auto angle = sensors.getAngle()*(180.0f/M_PI);
         Serial.print("YAW=");
         Serial.println(angle.x);
@@ -32,8 +33,7 @@ void loop()
         Serial.print("ROL=");
         Serial.println(angle.z);
 
-    cnt = 0;
+        timer = now + 2000;
     }
-
-    delay(5);
+    delay(3);
 }

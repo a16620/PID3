@@ -6,7 +6,12 @@ long DeltaTime::prevTime = 0;
 
 inline float DualLoopPID::position_p(const float& target, const float& position)
 {
-	return (target-position)*pP;
+	auto dist = target-position; //각도의 차
+	if (abs(dist) > M_PI) //최단 경로
+	{
+		dist = -copysignf(2.0f*M_PI-abs(dist), dist);
+	}
+	return dist*pP;
 }
 
 inline float DualLoopPID::rate_p(const float& error)
