@@ -8,7 +8,7 @@
 #define PITCH y
 #define ROLL x
 
-//센서를 담당하는 클래스. 싱글톤
+//센서를 담당하는 클래스. 싱글톤(전역 변수와 비슷한 느낌. 한개의 인스턴스만 사용될때 적용)
 class Sensors {
     MPU6050 mpu;
 

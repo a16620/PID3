@@ -33,7 +33,7 @@ void Sensors::update()
     const float deg2rad = (float)M_PI/180.0f;
     static uint8_t fifoBuffer[64];
 
-    if (mpu.dmpGetCurrentFIFOPacket(fifoBuffer)) //자체적으로 overflow 해결해줌
+    if (mpu.dmpGetCurrentFIFOPacket(fifoBuffer)) //DMP에서 수신하면 값을 갱신 (자체적으로 overflow 해결해줌)
     {
         Quaternion q;
         VectorFloat g;
@@ -85,14 +85,14 @@ void Actuators::setup()
 {
 #ifdef USE_MICROSEC_WRITE
     w_ail1.attach(1, mic_min, mic_max);
-    w_ail2.attach(1, mic_min, mic_max);
-    w_elev.attach(1, mic_min, mic_max);
-    w_rud.attach(1, mic_min, mic_max);
+    w_ail2.attach(2, mic_min, mic_max);
+    w_elev.attach(3, mic_min, mic_max);
+    w_rud.attach(4, mic_min, mic_max);
 #else
     w_ail1.attach(1);
-    w_ail2.attach(1);
-    w_elev.attach(1);
-    w_rud.attach(1);
+    w_ail2.attach(2);
+    w_elev.attach(3);
+    w_rud.attach(4);
 
 #endif
 }
